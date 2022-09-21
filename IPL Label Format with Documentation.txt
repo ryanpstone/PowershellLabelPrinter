@@ -1,0 +1,85 @@
+<STX>   --  ASCII start of text control code in readable characters. Each
+command string must begin with the start of text control code or
+its equivalent in readable characters.
+
+<ESC>C  --  <ESC>C is the syntax for the “Advanced Mode, Select” command.
+
+<ETX>   --  ASCII end of text control code in readable characters. Each
+command string must end with the end of text control code or its
+equivalent in readable characters.
+
+<ESC>P --   <ESC>P is the syntax for the “Program Mode, Enter” command.
+You need to place the printer in Program Mode to create and
+define a label format.
+
+E4     --   E is the syntax for the “Format, Erase” command. This command
+clears format 4 from the printer memory.
+F4     --   F is the syntax for the “Format, Create” command, which creates a
+new, blank format 4 in the printer memory.
+
+*      --   If you intend to regularly reload a format, you can use the temporary
+format parameter (*) with some printers. The use of format * results is an
+optimal use of flash-based storage memory because the printer stores it in
+RAM and deletes it when the printer power is turned off.
+
+<STX>R;<ETX>    --  Save format and exit to Print mode
+
+<STX><ESC>E4<ETX>   --  Access format 4
+
+<STX><CAN><ETX> --   Clears all host-entered data for the current format and sets the field pointer to the lowest
+numbered data-entry field.
+
+<STX>THIS IS THE SAMPLE LABEL<CR><ETX>  --  Data for human-readable field 0
+
+<STX>SAMPLE<ETX> Data for bar code field 2
+
+<STX><ETB><ETX> Print
+
+
+
+Whenever you create a format, the printer automatically creates a human-
+readable field zero (H0) along with it. The printer creates the H0 field
+with all field parameters set to the default setting. You can only delete field
+zero after you create one or more other fields. You cannot delete the last
+field in a format.
+
+Defaults for the H0 Field
+    o0,0; Field origin is 0,0.
+    f0; Field direction is horizontal with respect to the label motion from printer.
+    h1; Field height magnification is one.
+    w1; Field width magnification is one.
+    c2; Selects the 10 x 14 standard font.
+    b0; Selects no border around human-readable field.
+    r0; Selects horizontal orientation of characters.
+    d0,30; You enter variable data in Print mode. The maximum number of
+    characters you can enter into this field is 30.
+
+
+
+d0,20;      --  Specifies that data for field 13 will be entered during Print mode and that the data will be a
+maximum of 20 characters long
+
+d3,Cat.;    --  Sets the data for field 0 to have the constant value: Cat.
+
+
+
+
+<STX><ESC>C<ETX>
+<STX><ESC>P<ETX>
+<STX>E*;F*;<ETX>
+<STX>H1;f0;o20,51;c30;b0;h1;w1;d3,SSN:<ETX>
+<STX>H2;f0;o20,79;c30;b0;h1;w1;d3,ORD:<ETX>
+<STX>H3;f0;o11,24;c30;b0;h1;w1;d3,NAME:<ETX>
+<STX>H4;f3;o185,116;c30;b0;h1;w1;d3,CONTINGENCY ASSC:<ETX>
+<STX>H5;f3;o40,116;c30;b0;h1;w1;d3,TST:<ETX>
+<STX>H6;f0;o60,51;c30;b0;h1;w1;d3,Sample SSN<ETX>
+<STX>H7;f0;o60,79;c30;b0;h1;w1;d3,Sample Order #<ETX>
+<STX>H8;f0;o60,24;c30;b0;h1;w1;d3,Sample Name<ETX>
+<STX>H9;f3;o185,286;c30;b0;h1;w1;d3,Sample Assc<ETX>
+<STX>H10;f3;o40,156;c30;b0;h1;w1;d3,Sample Test<ETX>
+<STX>B11;f3;o151,111;c6,0,0,3;w3;h102;d3,Sample Assc<ETX>
+<STX>R;<ETX>
+<STX><ESC>E*<CAN><ETX>
+<STX><ETB><ETX>
+
+
